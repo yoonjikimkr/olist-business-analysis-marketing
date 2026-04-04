@@ -85,7 +85,19 @@
 ---
 
 ## 📂 주요 폴더 구조
-- `data/`: 원본 데이터셋 보관 (각 하위 폴더에 CSV 파일 위치)
+- `data/`: 데이터셋 보관
+    - `raw/`: 원본 CSV ([데이터 수집 가이드](scripts/setup_data.py))
+    - `processed/`: [마스터 테이블(ABT)](data/processed/marketing_sales_base.csv) ([생성 스크립트](scripts/generate_master_table.py))
+- `scripts/`: 데이터 수집 및 가공 유틸리티
 - `images/`: 분석 시각화 이미지 (PNG)
 - `md/`: 분석 리포트 및 [통합 ERD 설계](md/unified_erd.md)
 - `html/`: 인터랙티브 [AARRR 프레임워크 웹으로 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html)
+
+---
+
+## 🛠️ 분석 시작하기 (Getting Started)
+팀원들은 아래 순서로 로컬 환경을 세팅해 주세요.
+
+1. **데이터 수집**: `python3 scripts/setup_data.py` (Kaggle에서 데이터 자동 다운로드 및 배치)
+2. **마스터 테이블 생성**: `python3 scripts/generate_master_table.py` (분석용 통합 CSV 생성)
+3. **분석 착수**: `data/processed/marketing_sales_base.csv` 파일을 사용해 각 단계 분석 수행
