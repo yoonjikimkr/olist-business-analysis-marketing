@@ -1,8 +1,8 @@
 # 🛒 Olist Business Analysis & Marketing Strategy
 
 ## 🎯 분석 주제 및 목표
-**「셀러 모집 채널별 ROI 극대화 전략」 — Olist B2B 마케팅 퍼널 × E-commerce 통합 분석**
-> "Paid Search, Organic, Social 등 각 채널로 모집한 셀러 중, 누가 플랫폼에 가장 높은 장기 매출을 만들었는가? 그 채널에 예산을 집중하면 ROI가 극대화되는가?"
+**「89.5% 리드 이탈 최적화 및 채널별 LTV 극대화 전략」**
+> "8,000명의 잠재 셀러 중 89.5%가 계약 전 이탈하는 병목을 해결하고, 유입 채널별 셀러 생애 가치(LTV)를 분석하여 마케팅 예산 배분을 최적화한다."
 
 - **핵심 로직**: `MQL.origin(채널)` → `CLOSED_DEALS.seller_id` → `ORDER_ITEMS` → `ORDERS(매출)`
 - **상세 전략 및 분석 파이프라인**: [분석 전략 문서 보기](md/analysis_strategy.md)
@@ -11,8 +11,17 @@
 
 ## 👥 팀원 및 협업 안내
 - **총 인원**: 6명
-- **분석 제안**: [[260404] 팀원들과 함께 해보는 분석 제안](md/team_meeting_260404.md)
-- **주요 목표**: MQL(Marketing Qualified Leads) 데이터와 실제 주문 데이터를 결합하여 **데이터 기반의 마케팅 의사결정 시나리오** 도출
+- **분석 체계**: 아래 6개 파트로 나누어 마스터 테이블(`marketing_sales_base.csv`)을 기반으로 독립적/협업 분석을 수행합니다.
+
+### 🛠️ 6인 전문 분석 체계 (Specialized Roles)
+| 파트 | 담당 역할 | 핵심 분석 내용 |
+|---|---|---|
+| **파트 1** | **리드 품질 감별사** | 유입 경로(`origin`)별 리드 품질 및 전환 확률(OR) 분석 |
+| **파트 2** | **이탈 원인 탐정** | 89.5% 리드 손실의 원인 규명 (Sales Cycle, 시기 등) |
+| **파트 3** | **온보딩 가이드** | 계약 후 매출 발생(Activation) 지연 및 미판매 원인 분석 |
+| **파트 4** | **스타 셀러 헌터** | 상위 10% 고성과 셀러의 공통점 및 LTV 분석 |
+| **파트 5** | **품질 관리자** | 리뷰 점수(`Referral`) 기반의 채널별 셀러 품질 검증 (NLP) |
+| **파트 6** | **경제 설계자** | 전체 분석 통합 대시보드 구축 및 예산 재배분 시뮬레이션 |
 
 ---
 
@@ -20,9 +29,10 @@
 
 ### ✅ 완료된 작업
 - **2026-04-04**
-  - [x] **심층 EDA 분석 완료 (Deep Dive)**: 로지스틱 회귀, 랜덤 포레스트, K-Means 클러스터링 등을 적용한 채널별 ROI 심층 분석 완료 ([리포트 보기](md/Olist_deep_eda_report.md))
-  - [x] **Looker Studio 연동 데이터 생성**: 시각화 및 대시보드 구성을 위한 최종 마스터 데이터셋 구축 ([디렉토리 보기](data/processed/))
-  - [x] **Seller AARRR 분석 프레임워크 설계**: 판매자 관점의 획득(Acquisition)부터 수익(Revenue)까지의 KPI 지표 정의 ([프레임워크 보기](html/seller_aarrr_analysis_framework.html))
+  - [x] **탐색적 데이터 분석(EDA) 완료**: 기초 통계 분석 리포트 ([리포트 보기](md/eda_report.md))
+  - [x] **심층 분석 리포트 추가 (Deep Dive)**: 로지스틱 회귀, 머신러닝 등을 적용한 채널별 ROI 분석 ([심층 리포트 보기](md/Olist_deep_eda_report.md))
+  - [x] **Seller AARRR 분석 프레임워크 설계**: 판매자 관점 KPI 정의 ([웹 프리뷰](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html))
+  - [x] **Looker Studio 연동 데이터 구축**: 시각화 최적화 마스터셋 생성 ([데이터 보기](data/processed/looker_studio_master.csv))
   - [x] **프로젝트 구조 최적화**: 폴더 정리 및 문서 내 링크 정규화
 
 ---
