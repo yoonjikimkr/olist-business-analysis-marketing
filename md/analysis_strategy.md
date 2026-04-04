@@ -13,6 +13,12 @@
 `MQL.origin(채널)` → `CLOSED_DEALS.seller_id` → `ORDER_ITEMS` → `ORDERS(매출)`
 (상세 데이터 연결 구조는 **[통합 ERD 설계](unified_erd.md)** 참조)
 
+### 📊 분석용 마스터 테이블 (ABT)
+팀원들이 즉시 분석에 활용할 수 있도록 위 데이터를 조인한 마스터 파일을 제공합니다.
+- **파일 경로**: `data/processed/marketing_sales_base.csv`
+- **주요 컬럼**: `origin`, `business_segment`, `won_date`, `total_revenue`, `total_order_count`, `is_won`, `has_revenue` 등
+- **생성 방법**: `python3 scripts/generate_master_table.py` 실행
+
 ---
 
 ## 3. 5단계 분석 흐름 (Analysis Pipeline)

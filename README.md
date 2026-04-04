@@ -101,3 +101,9 @@
 1. **데이터 수집**: `python3 scripts/setup_data.py` (Kaggle에서 데이터 자동 다운로드 및 배치)
 2. **마스터 테이블 생성**: `python3 scripts/generate_master_table.py` (분석용 통합 CSV 생성)
 3. **분석 착수**: `data/processed/marketing_sales_base.csv` 파일을 사용해 각 단계 분석 수행
+
+### 🤝 팀 협업 데이터 워크플로우 (Data Workflow)
+우리가 사용하는 마스터 테이블(`marketing_sales_base.csv`)은 아래 로직으로 생성됩니다.
+- **Join Key**: `seller_id` (마케팅 계약 데이터와 실제 이커머스 판매 데이터의 유일한 연결 고리)
+- **Left Join**: '계약은 했으나 매출이 없는' 리드까지 포함하여 **진정한 전환율(Conversion)**을 계산하기 위함
+- **Data Granularity**: 1 Row = 1 MQL (각 리드별 마케팅 정보 + 해당 셀러의 성과 요약)
