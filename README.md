@@ -20,7 +20,8 @@
 
 ### ✅ 완료된 작업
 - **2026-04-04**
-  - [x] **탐색적 데이터 분석(EDA) 완료**: 9개 데이터셋을 통합하여 결제, 주문 추이, 고객 분포, 리뷰 점수 등 기초 통계 분석 완료 ([리포트 보기](md/eda_report.md))
+  - [x] **심층 EDA 분석 완료 (Deep Dive)**: 로지스틱 회귀, 랜덤 포레스트, K-Means 클러스터링 등을 적용한 채널별 ROI 심층 분석 완료 ([리포트 보기](md/Olist_deep_eda_report.md))
+  - [x] **Looker Studio 연동 데이터 생성**: 시각화 및 대시보드 구성을 위한 최종 마스터 데이터셋 구축 ([디렉토리 보기](data/processed/))
   - [x] **Seller AARRR 분석 프레임워크 설계**: 판매자 관점의 획득(Acquisition)부터 수익(Revenue)까지의 KPI 지표 정의 ([프레임워크 보기](html/seller_aarrr_analysis_framework.html))
   - [x] **프로젝트 구조 최적화**: 폴더 정리 및 문서 내 링크 정규화
 
@@ -174,10 +175,14 @@ erDiagram
 ## 📂 주요 폴더 구조
 - `data/`: 데이터셋 보관
     - `raw/`: 원본 CSV ([데이터 수집 가이드](scripts/setup_data.py))
-    - `processed/`: [마스터 테이블(ABT)](data/processed/marketing_sales_base.csv) ([생성 스크립트](scripts/generate_master_table.py))
+    - `processed/`: 
+        - [마스터 테이블(ABT)](data/processed/marketing_sales_base.csv) ([생성 스크립트](scripts/generate_master_table.py))
+        - [Looker Studio 마스터](data/processed/looker_studio_master.csv) (시각화 최적화 데이터)
 - `scripts/`: 데이터 수집 및 가공 유틸리티
 - `images/`: 분석 시각화 이미지 (PNG)
-- `md/`: 분석 리포트 및 [통합 ERD 설계](md/unified_erd.md)
+- `md/`: 
+    - [통합 ERD 설계](md/unified_erd.md)
+    - [심층 EDA 리포트](md/Olist_deep_eda_report.md) (핵심 인사이트)
 - `html/`: 인터랙티브 [AARRR 프레임워크 웹으로 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html)
 
 ---
