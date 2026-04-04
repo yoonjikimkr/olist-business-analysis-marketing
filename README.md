@@ -44,6 +44,92 @@
 
 🔗 **상세 인터랙티브 맵**: [웹에서 보기(추천)](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/connectivity_map.html) / [소스 코드](html/connectivity_map.html)
 
+### 🗺️ 데이터 데이터 관계도 (Unified ERD)
+```mermaid
+erDiagram
+    %% Marketing Funnel Dataset
+    MQLs {
+        string mql_id PK
+        datetime first_contact_date
+        string landing_page_id
+        string origin
+    }
+
+    Closed_Deals {
+        string mql_id FK
+        string seller_id FK
+        string sdr_id
+        string sr_id
+        datetime won_date
+        string business_segment
+        string lead_type
+    }
+
+    %% Brazilian E-Commerce Dataset
+    Sellers {
+        string seller_id PK
+        string seller_zip_code_prefix
+        string seller_city
+        string seller_state
+    }
+
+    Order_Items {
+        string order_id FK
+        int order_item_id
+        string product_id FK
+        string seller_id FK
+        float price
+        float freight_value
+    }
+
+    Orders {
+        string order_id PK
+        string customer_id FK
+        string order_status
+        datetime order_purchase_timestamp
+        datetime order_delivered_customer_date
+    }
+
+    Customers {
+        string customer_id PK
+        string customer_unique_id
+        string customer_zip_code_prefix
+        string customer_city
+        string customer_state
+    }
+
+    Products {
+        string product_id PK
+        string product_category_name
+        int product_weight_g
+    }
+
+    Order_Payments {
+        string order_id FK
+        int payment_sequential
+        string payment_type
+        float payment_value
+    }
+
+    Order_Reviews {
+        string review_id PK
+        string order_id FK
+        int review_score
+        string review_comment_message
+    }
+
+    %% Relationships
+    MQLs ||--o| Closed_Deals : "mql_id"
+    Closed_Deals ||--|| Sellers : "seller_id (Connects Funnel to Revenue)"
+    Sellers ||--o{ Order_Items : "seller_id"
+    Order_Items }|--|| Orders : "order_id"
+    Order_Items }|--|| Products : "product_id"
+    Orders ||--o{ Order_Payments : "order_id"
+    Orders ||--o{ Order_Reviews : "order_id"
+    Orders }|--|| Customers : "customer_id"
+```
+
+
 ### 💡 단계별 연결 고리 (Why & How)
 팀원 6명이 각 단계를 수행할 때, 우리 작업이 어떻게 연결되는지 정의합니다.
 
