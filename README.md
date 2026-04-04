@@ -29,7 +29,7 @@
 보내주신 **5단계 분석 파이프라인**과 **AARRR 프레임워크**를 결합한 상세 실행 계획입니다.
 
 ### 📊 분석 흐름 시각화 (Connectivity Map)
-> 💡 더 시각적인 맵은 [프리미엄 HTML 맵 보기를 클릭하세요.](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/connectivity_map.html)
+> 💡 [통합 ERD(데이터 관계도) 상세 보기](md/unified_erd.md) | [프리미엄 HTML 맵 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/connectivity_map.html)
 
 ```text
 [ Step 1. 유입 채널 ]  ──(전환율 분석)──▶  [ Step 2. 입점 셀러 ]
@@ -85,6 +85,7 @@
 ---
 
 ## 📂 주요 폴더 구조
+- `data/`: 원본 데이터셋 보관 (각 하위 폴더에 CSV 파일 위치)
 - `images/`: 분석 시각화 이미지 (PNG)
-- `md/`: 분석 리포트 및 방법론 가이드 ([분석 전략 가이드](md/analysis_strategy.md))
+- `md/`: 분석 리포트 및 [통합 ERD 설계](md/unified_erd.md)
 - `html/`: 인터랙티브 [AARRR 프레임워크 웹으로 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html)

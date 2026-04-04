@@ -11,6 +11,7 @@
 ## 2. 데이터 연결 경로 (Data Path)
 분석은 아래와 같은 경로로 데이터를 조인하여 수행됩니다.
 `MQL.origin(채널)` → `CLOSED_DEALS.seller_id` → `ORDER_ITEMS` → `ORDERS(매출)`
+(상세 데이터 연결 구조는 **[통합 ERD 설계](unified_erd.md)** 참조)
 
 ---
 
