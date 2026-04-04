@@ -29,7 +29,7 @@
 보내주신 **5단계 분석 파이프라인**과 **AARRR 프레임워크**를 결합한 상세 실행 계획입니다.
 
 ### 📊 분석 흐름 시각화 (Connectivity Map)
-> 💡 더 시각적인 맵은 [프리미엄 HTML 맵 보기를 클릭하세요.](html/connectivity_map.html)
+> 💡 더 시각적인 맵은 [프리미엄 HTML 맵 보기를 클릭하세요.](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/connectivity_map.html)
 
 ```text
 [ Step 1. 유입 채널 ]  ──(전환율 분석)──▶  [ Step 2. 입점 셀러 ]
@@ -42,7 +42,7 @@
         (Strategy)                           (Revenue)
 ```
 
-🔗 **상세 인터랙티브 맵**: [connectivity_map.html](html/connectivity_map.html) (브라우저에서 확인 가능)
+🔗 **상세 인터랙티브 맵**: [웹에서 보기(추천)](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/connectivity_map.html) / [소스 코드](html/connectivity_map.html)
 
 ### 💡 단계별 연결 고리 (Why & How)
 팀원 6명이 각 단계를 수행할 때, 우리 작업이 어떻게 연결되는지 정의합니다.
@@ -87,4 +87,4 @@
 ## 📂 주요 폴더 구조
 - `images/`: 분석 시각화 이미지 (PNG)
 - `md/`: 분석 리포트 및 방법론 가이드 ([분석 전략 가이드](md/analysis_strategy.md))
-- `html/`: 인터랙티브 [AARRR 프레임워크 설계](html/seller_aarrr_analysis_framework.html)
+- `html/`: 인터랙티브 [AARRR 프레임워크 웹으로 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html)

@@ -34,5 +34,5 @@
 ---
 
 ## 🔗 관련 문서
-- [Seller AARRR 분석 프레임워크](../html/seller_aarrr_analysis_framework.html)
+- [Seller AARRR 분석 프레임워크 웹에서 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](../html/seller_aarrr_analysis_framework.html)
 - [기초 탐색적 데이터 분석(EDA) 리포트](eda_report.md)
