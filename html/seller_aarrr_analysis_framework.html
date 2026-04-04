@@ -1,0 +1,205 @@
+
+<style>
+* { box-sizing: border-box; }
+.wrap { padding: 4px 0 16px; }
+.stage { margin-bottom: 20px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+.stage-header { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+.stage-letter { font-size: 13px; font-weight: 500; padding: 2px 10px; border-radius: 12px; white-space: nowrap; }
+.stage-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.stage-q { font-size: 12px; color: var(--color-text-secondary); margin-left: auto; max-width: 340px; text-align: right; }
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.col { padding: 12px 14px; }
+.col:not(:last-child) { border-right: 0.5px solid var(--color-border-tertiary); }
+.col-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 8px; }
+.item { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 10px; margin-bottom: 6px; }
+.item:last-child { margin-bottom: 0; }
+.item-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.item-sub { font-size: 11px; color: var(--color-text-secondary); font-family: var(--font-mono); line-height: 1.5; }
+.item-sub-plain { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
+.kpi-item { border-left: 3px solid; border-radius: var(--border-radius-md); padding: 8px 10px; margin-bottom: 6px; background: var(--color-background-secondary); }
+.kpi-item:last-child { margin-bottom: 0; }
+.kpi-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.kpi-formula { font-size: 11px; color: var(--color-text-secondary); font-family: var(--font-mono); line-height: 1.5; }
+
+/* conclusion */
+.conclusion { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); overflow: hidden; }
+.con-header { padding: 11px 16px; background: var(--color-background-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.con-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.con-col { padding: 12px 14px; }
+.con-col:first-child { border-right: 0.5px solid var(--color-border-tertiary); }
+.con-col-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 8px; }
+.decision-item { padding: 8px 10px; border-radius: var(--border-radius-md); margin-bottom: 6px; background: var(--color-background-secondary); font-size: 12px; color: var(--color-text-primary); line-height: 1.5; }
+.decision-item:last-child { margin-bottom: 0; }
+.badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 8px; margin-right: 4px; vertical-align: middle; }
+</style>
+
+<div class="wrap">
+
+<!-- A: Acquisition -->
+<div class="stage">
+  <div class="stage-header">
+    <span class="stage-letter" style="background:#EEEDFE;color:#534AB7;">Acquisition</span>
+    <span class="stage-name">판매자 유입 — 어느 채널에서 리드가 오는가</span>
+    <span class="stage-q">분석 1 · 채널별 전환율</span>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <div class="col-label">주요 이벤트</div>
+      <div class="item"><div class="item-title">랜딩페이지 최초 유입</div><div class="item-sub">mql_leads.first_contact_date<br>mql_leads.landing_page_id</div></div>
+      <div class="item"><div class="item-title">MQL 생성 (리드 등록)</div><div class="item-sub">mql_leads.mql_id 생성<br>mql_leads.origin 기록</div></div>
+      <div class="item"><div class="item-title">채널 분류</div><div class="item-sub-plain">organic_search / paid_search<br>social / email / other</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">사용 테이블 & Join</div>
+      <div class="item"><div class="item-title">기본 테이블</div><div class="item-sub">mql_leads<br>closed_deals</div></div>
+      <div class="item"><div class="item-title">Join 키</div><div class="item-sub">mql_leads.mql_id<br>= closed_deals.mql_id</div></div>
+      <div class="item"><div class="item-title">핵심 필드</div><div class="item-sub">origin, first_contact_date<br>won_date, seller_id</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">KPI</div>
+      <div class="kpi-item" style="border-color:#534AB7;"><div class="kpi-name">채널별 MQL 수 (월별)</div><div class="kpi-formula">COUNT(mql_id)<br>GROUP BY origin, month</div></div>
+      <div class="kpi-item" style="border-color:#534AB7;"><div class="kpi-name">채널별 전환율 (CVR)</div><div class="kpi-formula">COUNT(won) / COUNT(mql_id)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#534AB7;"><div class="kpi-name">MQL 월별 성장률</div><div class="kpi-formula">(이번달 MQL - 전달) / 전달<br>GROUP BY origin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- A: Activation -->
+<div class="stage">
+  <div class="stage-header">
+    <span class="stage-letter" style="background:#E1F5EE;color:#0F6E56;">Activation</span>
+    <span class="stage-name">딜 성사 & 첫 판매 — 리드가 실제 셀러가 되는가</span>
+    <span class="stage-q">분석 1·4 · 전환율 + Time-lag</span>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <div class="col-label">주요 이벤트</div>
+      <div class="item"><div class="item-title">딜 클로즈 (won)</div><div class="item-sub">closed_deals.won_date<br>closed_deals.seller_id 생성</div></div>
+      <div class="item"><div class="item-title">셀러 첫 주문 수령</div><div class="item-sub">order_items.seller_id<br>최초 order_id 등장</div></div>
+      <div class="item"><div class="item-title">첫 상품 배송 완료</div><div class="item-sub">orders.order_status<br>= 'delivered' (첫 건)</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">사용 테이블 & Join</div>
+      <div class="item"><div class="item-title">기본 테이블</div><div class="item-sub">mql_leads + closed_deals<br>+ order_items + orders</div></div>
+      <div class="item"><div class="item-title">Join 키</div><div class="item-sub">closed_deals.seller_id<br>= order_items.seller_id</div></div>
+      <div class="item"><div class="item-title">파생 컬럼</div><div class="item-sub">won_date → first_order_date<br>time_to_first_sale (일수)</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">KPI</div>
+      <div class="kpi-item" style="border-color:#0F6E56;"><div class="kpi-name">채널별 Sales Cycle</div><div class="kpi-formula">AVG(won_date - first_contact_date)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#0F6E56;"><div class="kpi-name">Time-to-First-Sale</div><div class="kpi-formula">AVG(첫 order_items 날짜 - won_date)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#0F6E56;"><div class="kpi-name">채널별 입점 후 미판매율</div><div class="kpi-formula">seller_id in closed_deals<br>BUT NOT in order_items</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- R: Retention -->
+<div class="stage">
+  <div class="stage-header">
+    <span class="stage-letter" style="background:#FAEEDA;color:#854F0B;">Retention</span>
+    <span class="stage-name">셀러 활성 지속 — 채널별 셀러가 꾸준히 파는가</span>
+    <span class="stage-q">분석 2 · 채널별 RFM</span>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <div class="col-label">주요 이벤트</div>
+      <div class="item"><div class="item-title">월별 지속 판매</div><div class="item-sub">order_items.seller_id<br>월별 연속 등장</div></div>
+      <div class="item"><div class="item-title">카테고리 확장</div><div class="item-sub">seller_id별<br>product_category 다양화</div></div>
+      <div class="item"><div class="item-title">셀러 이탈 (Churn)</div><div class="item-sub">전월 활성 but<br>당월 0건 판매</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">사용 테이블 & Join</div>
+      <div class="item"><div class="item-title">기본 테이블</div><div class="item-sub">closed_deals + order_items<br>+ orders + products</div></div>
+      <div class="item"><div class="item-title">Join 키</div><div class="item-sub">seller_id (3-way join)<br>order_id, product_id</div></div>
+      <div class="item"><div class="item-title">파생 컬럼</div><div class="item-sub">active_months, churn_flag<br>category_diversity_count</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">KPI — RFM per 채널</div>
+      <div class="kpi-item" style="border-color:#BA7517;"><div class="kpi-name">Recency — 마지막 판매일</div><div class="kpi-formula">MAX(order_purchase_timestamp)<br>GROUP BY seller_id, origin</div></div>
+      <div class="kpi-item" style="border-color:#BA7517;"><div class="kpi-name">Frequency — 월 평균 주문 건수</div><div class="kpi-formula">COUNT(order_id) / active_months<br>GROUP BY seller_id, origin</div></div>
+      <div class="kpi-item" style="border-color:#BA7517;"><div class="kpi-name">채널별 셀러 Churn Rate</div><div class="kpi-formula">이탈 seller / 전월 활성 seller<br>GROUP BY origin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- R: Referral -->
+<div class="stage">
+  <div class="stage-header">
+    <span class="stage-letter" style="background:#FBEAF0;color:#993556;">Referral</span>
+    <span class="stage-name">셀러 품질 → 구매자 바이럴 — 좋은 셀러가 플랫폼 평판을 높이는가</span>
+    <span class="stage-q">분석 3 · Attribution</span>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <div class="col-label">주요 이벤트</div>
+      <div class="item"><div class="item-title">구매자 고평점 리뷰</div><div class="item-sub">order_reviews.review_score ≥ 4<br>seller_id 기준 집계</div></div>
+      <div class="item"><div class="item-title">저평점 리뷰 (역효과)</div><div class="item-sub">review_score ≤ 2<br>채널별 불량 셀러 비율</div></div>
+      <div class="item"><div class="item-title">배송 준수율</div><div class="item-sub">delivered ≤ estimated<br>delivery_date 비율</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">사용 테이블 & Join</div>
+      <div class="item"><div class="item-title">기본 테이블</div><div class="item-sub">closed_deals + order_items<br>+ orders + order_reviews</div></div>
+      <div class="item"><div class="item-title">Join 키</div><div class="item-sub">seller_id → order_id<br>→ review_id</div></div>
+      <div class="item"><div class="item-title">파생 컬럼</div><div class="item-sub">avg_review_score_by_seller<br>on_time_delivery_rate</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">KPI</div>
+      <div class="kpi-item" style="border-color:#D4537E;"><div class="kpi-name">채널별 평균 리뷰 점수</div><div class="kpi-formula">AVG(review_score)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#D4537E;"><div class="kpi-name">채널별 NPS 대리지표</div><div class="kpi-formula">(score≥4 비율) - (score≤2 비율)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#D4537E;"><div class="kpi-name">채널별 배송 준수율</div><div class="kpi-formula">on_time orders / total orders<br>GROUP BY origin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- R: Revenue -->
+<div class="stage">
+  <div class="stage-header">
+    <span class="stage-letter" style="background:#EAF3DE;color:#3B6D11;">Revenue</span>
+    <span class="stage-name">채널별 매출 기여 & LTV — 어느 채널 셀러가 돈이 됐는가</span>
+    <span class="stage-q">분석 3·4·5 · Attribution + LTV + Forecast</span>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <div class="col-label">주요 이벤트</div>
+      <div class="item"><div class="item-title">셀러 월별 GMV 발생</div><div class="item-sub">order_items.price + freight_value<br>seller_id별 월 합산</div></div>
+      <div class="item"><div class="item-title">고가 카테고리 판매</div><div class="item-sub">products.category ×<br>order_items.price 분포</div></div>
+      <div class="item"><div class="item-title">선언 매출 vs 실 매출</div><div class="item-sub">declared_monthly_revenue<br>vs 실제 order 매출</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">사용 테이블 & Join</div>
+      <div class="item"><div class="item-title">기본 테이블</div><div class="item-sub">closed_deals + mql_leads<br>+ order_items + orders<br>+ products + category_translation</div></div>
+      <div class="item"><div class="item-title">Join 키</div><div class="item-sub">origin → seller_id<br>→ order_id → payment_value</div></div>
+      <div class="item"><div class="item-title">파생 컬럼</div><div class="item-sub">seller_GMV, seller_LTV<br>revenue_per_origin</div></div>
+    </div>
+    <div class="col">
+      <div class="col-label">KPI</div>
+      <div class="kpi-item" style="border-color:#3B6D11;"><div class="kpi-name">채널별 총 GMV 기여</div><div class="kpi-formula">SUM(price + freight_value)<br>GROUP BY origin</div></div>
+      <div class="kpi-item" style="border-color:#3B6D11;"><div class="kpi-name">셀러 LTV (채널별)</div><div class="kpi-formula">SUM(GMV) / seller_id<br>GROUP BY origin (누적)</div></div>
+      <div class="kpi-item" style="border-color:#3B6D11;"><div class="kpi-name">채널 ROI</div><div class="kpi-formula">GMV_from_origin /<br>estimated_CAC_by_origin</div></div>
+      <div class="kpi-item" style="border-color:#3B6D11;"><div class="kpi-name">Forecast 변수</div><div class="kpi-formula">CVR × LTV × 예산 시나리오<br>→ 예상 추가 GMV</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 최종 결론 -->
+<div class="conclusion">
+  <div class="con-header">최종 결론 프레임 — "어디에 예산을 집중하고, 어떤 셀러를 타겟할 것인가"</div>
+  <div class="con-grid">
+    <div class="con-col">
+      <div class="con-col-label">채널 예산 우선순위 결정 기준</div>
+      <div class="decision-item"><span class="badge" style="background:#EEEDFE;color:#534AB7;">1순위</span>CVR × LTV 가 모두 높은 채널 — 전환도 잘 되고 오래 판매</div>
+      <div class="decision-item"><span class="badge" style="background:#E1F5EE;color:#0F6E56;">2순위</span>CVR 낮지만 LTV 매우 높은 채널 — 소수 고품질 셀러 확보용</div>
+      <div class="decision-item"><span class="badge" style="background:#FAEEDA;color:#854F0B;">축소</span>CVR 높지만 LTV 낮고 Churn 빠른 채널 — 볼륨만 채우는 채널</div>
+      <div class="decision-item"><span class="badge" style="background:#FCEBEB;color:#A32D2D;">제거</span>CVR·LTV 모두 낮고 review_score 도 낮은 채널</div>
+    </div>
+    <div class="con-col">
+      <div class="con-col-label">타겟 셀러 프로필 기준</div>
+      <div class="decision-item"><span class="badge" style="background:#EEEDFE;color:#534AB7;">업종</span>business_segment × GMV 상위 — 실제 돈이 되는 카테고리 셀러 우선</div>
+      <div class="decision-item"><span class="badge" style="background:#E1F5EE;color:#0F6E56;">지역</span>seller_state × GMV 밀도 — 물류 커버 가능하고 수요 높은 주(state)</div>
+      <div class="decision-item"><span class="badge" style="background:#FAEEDA;color:#854F0B;">규모</span>declared_monthly_revenue × LTV 상관 — 자기신고 매출이 실적 예측에 유효한지 검증</div>
+      <div class="decision-item"><span class="badge" style="background:#EAF3DE;color:#3B6D11;">프로파일</span>lead_behaviour_profile × CVR — hunter·fisher 중 어느 프로필이 전환율 높은지</div>
+    </div>
+  </div>
+</div>
+
+</div>
