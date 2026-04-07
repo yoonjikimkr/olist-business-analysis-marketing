@@ -28,12 +28,14 @@
 ## 📅 프로젝트 진행 현황 (Timeline)
 
 ### ✅ 완료된 작업
+- **2026-04-07**
+  - [x] **마케팅 채널 성과 분석 완결 (Acquisition)**: 8,000개 리드 전수 분석 및 리포트 작성 ([최종 리포트 보기](md/Acquisition.md))
+  - [x] **unknown 채널 정체 규명**: LP 분석을 통해 UTM 유실 검색 트래픽임을 입증 (집중도 55.8%)
+  - [x] **리드 품질 정량화**: 로지스틱 회귀 분석을 통한 채널별 전환 기여도(Odds Ratio) 산출
+  - [x] **데이터 무결성 검증**: 실제 데이터 기반 수치 교정 및 마스터 테이블 정합성 확보
 - **2026-04-04**
   - [x] **탐색적 데이터 분석(EDA) 완료**: 기초 통계 분석 리포트 ([리포트 보기](md/eda_report.md))
   - [x] **심층 분석 리포트 추가 (Deep Dive)**: 로지스틱 회귀, 머신러닝 등을 적용한 채널별 ROI 분석 ([심층 리포트 보기](md/Olist_deep_eda_report.md))
-  - [x] **Seller AARRR 분석 프레임워크 설계**: 판매자 관점 KPI 정의 ([웹 프리뷰](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html))
-  - [x] **Looker Studio 연동 데이터 구축**: 시각화 최적화 마스터셋 생성 ([데이터 보기](data/processed/looker_studio_master.csv))
-  - [x] **프로젝트 구조 최적화**: 폴더 정리 및 문서 내 링크 정규화
 
 ---
 
@@ -151,10 +153,11 @@ erDiagram
 
 ---
 
-### 1단계: 데이터 연결 및 마케팅 퍼널 기초 분석
-- [ ] **과제 1. 채널별 전환율 분석**: 유입 경로(`origin`) → 계약(`won`) 전환율 (담당: 파트 1, 2)
-  - 채널별 리드 생성부터 계약까지 소요되는 '영업 주기' 분석
+### 1단계: 데이터 연결 및 마케팅 퍼널 기초 분석 (완료)
+- [x] **과제 1. 채널별 전환율 분석**: 유입 경로(`origin`) → 계약(`won`) 전환율 (담당: 파트 1, 2)
+  - **결과**: `unknown`(18.5%), `organic`(11.8%) 순으로 높은 전환율 확인. `social`은 5.3%로 최하위.
   - **데이터 포인트**: `origin`, `first_contact_date`, `won_date`
+  - **문서**: [Acquisition 성과 분석 리포트](md/Acquisition.md)
 - [ ] **과제 2. 셀러 활동성 평가(RFM)**: 입점 셀러의 생존 및 활동 주기 (담당: 파트 2, 3)
   - 최근 판매일(`Recency`)과 빈도(`Frequency`)를 통해 이탈 셀러 식별
   - **데이터 포인트**: `order_purchase_timestamp`, `seller_id`
@@ -186,6 +189,7 @@ erDiagram
 - `scripts/`: 데이터 수집 및 가공 유틸리티
 - `images/`: 분석 시각화 이미지 (PNG)
 - `md/`: 
+    - [마케팅 채널 성과 분석(Final)](md/Acquisition.md) : **(New)** 수치 검증이 완료된 종합 리포트
     - [통합 ERD 설계](md/unified_erd.md)
     - [심층 EDA 리포트](md/Olist_deep_eda_report.md) (핵심 인사이트)
 - `html/`: 인터랙티브 [AARRR 프레임워크 웹으로 보기](https://raw.githack.com/yoonjikimkr/olist-business-analysis-marketing/main/html/seller_aarrr_analysis_framework.html) / [소스 코드](html/seller_aarrr_analysis_framework.html)
