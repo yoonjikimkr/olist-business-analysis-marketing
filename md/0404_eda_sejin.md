@@ -49,7 +49,7 @@
 
 ### [Olist Seller AARRR 프레임워크 요약]
 
-![Olist Seller AARRR 프레임워크](images/olist_seller_aarrr_summary.png)
+![Olist Seller AARRR 프레임워크](../images/olist_seller_aarrr_summary.png)
 
 | 단계 | 정의 (Seller 관점) | 핵심 지표 (Core Metrics) | 분석 포인트 |
 | :--- | :--- | :--- | :--- |
@@ -70,8 +70,8 @@
 *   가장 많은 리드(MQL)를 유입시키는 채널은 **Organic Search** (2,296건, 약 28.7%)이며, **Paid Search** (1,586건, 약 19.8%)와 **Social** (1,350건, 약 16.9%)이 그 뒤를 잇습니다.
 *   월별 추이를 보면 2018년 초부터 MQL 유입이 급격히 증가하는 추세를 보입니다.
 
-![채널별 MQL 분포](images/acq_channel_dist.png)
-![월별 MQL 유입 추이](images/acq_mql_trend.png)
+![채널별 MQL 분포](../images/acq_channel_dist.png)
+![월별 MQL 유입 추이](../images/acq_mql_trend.png)
 
 > [!TIP]
 > **핵심 인사이트 (Acquisition)**
@@ -90,9 +90,9 @@
 *   **Sales Cycle:** MQL 유입 후 계약 체결까지의 기간(Sales Cycle)은 대부분의 채널에서 중앙값 기준 10~30일 내외로 나타납니다.
 *   **CVR vs Lead Time:** Paid Search는 전환율이 높으면서도 계약 기간이 상대적으로 짧아 매우 효율적인 채널로 분류됩니다.
 
-![채널별 전환율(CVR)](images/act_cvr.png)
-![채널별 Sales Cycle 분포](images/act_sales_cycle.png)
-![CVR vs Sales Cycle](images/act_cvr_vs_leadtime.png)
+![채널별 전환율(CVR)](../images/act_cvr.png)
+![채널별 Sales Cycle 분포](../images/act_sales_cycle.png)
+![CVR vs Sales Cycle](../images/act_cvr_vs_leadtime.png)
 
 > [!TIP]
 > **핵심 인사이트 (Activation)**
@@ -110,7 +110,7 @@
 *   **이탈률(Churn Rate):** 시간이 지남에 따라 셀러들의 월간 이탈률이 변동성을 보이며, 일부 유료 채널 유입 셀러들의 유지력이 상대적으로 낮은 경향이 관찰됩니다.
 *   위 시각화 자료를 통해 특정 기간에 모든 채널의 이탈률이 급증하는 구간이 확인되며, 이는 플랫폼 서비스 이슈나 계절성 요인일 가능성이 큽니다.
 
-![채널별 월간 셀러 이탈률](images/ret_churn_rate.png)
+![채널별 월간 셀러 이탈률](../images/ret_churn_rate.png)
 
 > [!TIP]
 > **핵심 인사이트 (Retention)**
@@ -127,7 +127,7 @@
 *   **NPS Proxy:** 고객 만족도는 **Unknown** 및 **Social** 유입 셀러들이 상대적으로 높게 나타납니다.
 *   배송 준수율 및 리뷰 점수는 플랫폼의 지속 가능성을 결정짓는 핵심 지표로, 채널 간 품질 차이가 존재함을 확인했습니다.
 
-![채널별 NPS Proxy](images/ref_nps.png)
+![채널별 NPS Proxy](../images/ref_nps.png)
 
 > [!TIP]
 > **핵심 인사이트 (Referral)**
@@ -147,8 +147,8 @@
 *   **ROI Proxy (GMV per MQL):** 리드당 매출 기여도는 **Paid Search**가 약 114.7 BRL로 소셜(38.0 BRL) 대비 매우 높습니다.
 *   **업종별 매출 히트맵:** 특정 업종(예: Health & Beauty, Watches)이 특정 채널에서 유입되었을 때 매출 성과가 극대화되는 경향이 있습니다.
 
-![채널별 ROI Proxy](images/rev_roi.png)
-![업종 x 채널 평균 GMV 히트맵](images/rev_heatmap.png)
+![채널별 ROI Proxy](../images/rev_roi.png)
+![업종 x 채널 평균 GMV 히트맵](../images/rev_heatmap.png)
 
 ---
 
@@ -158,7 +158,7 @@
 
 **분석 방법:** 전환율(CVR)과 셀러당 평균 매출(LTV)을 두 축으로 하여 채널을 분류하였습니다.
 
-![채널 전략 2x2 매트릭스](images/final_strategy_matrix.png)
+![채널 전략 2x2 매트릭스](../images/final_strategy_matrix.png)
 
 *   **최우선 투자 (우상단):** **Paid Search**, **Organic Search**
     *   높은 전환 효율과 준수한 LTV를 보유. 예산 증액 시 즉각적인 매출 증대 기대.
