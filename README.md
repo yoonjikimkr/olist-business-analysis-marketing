@@ -158,6 +158,8 @@ erDiagram
   - **결과**: `unknown`(16.7%), `paid_search`(12.3%), `organic_search`(11.8%) 순으로 높은 전환율 확인. `social`은 5.6%로 최하위권.
   - **데이터 포인트**: `origin`, `first_contact_date`, `won_date`
   - **문서**: [Acquisition 성과 분석 리포트](md/Acquisition.md)
+
+![채널별 유입 규모 vs. 수익 기여도(ROI) 비교](images/channel_volume_vs_roi.png)
 - [ ] **과제 2. 셀러 활동성 평가(RFM)**: 입점 셀러의 생존 및 활동 주기 (담당: 파트 2, 3)
   - 최근 판매일(`Recency`)과 빈도(`Frequency`)를 통해 이탈 셀러 식별
   - **데이터 포인트**: `order_purchase_timestamp`, `seller_id`
