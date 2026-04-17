@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Olist Part 4: Revenue & LTV 분석 대시보드</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+        header { background: #2E5077; color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h3 { color: #2E5077; border-left: 5px solid #2E5077; padding-left: 10px; }
+        img { width: 100%; border-radius: 5px; cursor: pointer; }
+        .full-width { grid-column: span 2; }
+        .insight { background: #eef2f7; padding: 15px; border-radius: 5px; margin-top: 10px; font-weight: bold; color: #1a3a5f; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Olist 셀러 모집 채널별 ROI 극대화 전략</h1>
+        <p>Part 4: Revenue & LTV 분석 (담당: 김하은)</p>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h3>1. 스타 셀러 군집(Cluster) 식별</h3>
+            <img src="images/v1_kmeans_scatter.png" alt="K-Means Scatter Plot">
+            <div class="insight">상위 10%의 '스타 셀러' 그룹은 압도적인 LTV 성과를 보입니다.</div>
+        </div>
+
+        <div class="card">
+            <h3>2. 군집별 평균 LTV 비교</h3>
+            <img src="images/v2_avg_ltv_bar.png" alt="Average LTV Comparison">
+            <div class="insight">우량 셀러 그룹의 가치는 일반 셀러 대비 약 8.5배 높습니다.</div>
+        </div>
+
+        <div class="card">
+            <h3>3. 유입 채널별 우량 셀러 배출 확률</h3>
+            <img src="images/v3_star_ratio_origin.png" alt="Star Ratio by Origin">
+            <div class="insight">Paid Search와 Social 채널이 가장 정교한 타겟팅 성과를 보입니다.</div>
+        </div>
+
+        <div class="card">
+            <h3>4. 채널별 총 매출(GMV) 기여도</h3>
+            <img src="images/v4_gmv_treemap.png" alt="GMV Treemap">
+            <div class="insight">UNKNOWN 채널의 볼륨은 크지만, 개별 품질은 Paid가 우세합니다.</div>
+        </div>
+
+        <div class="card">
+            <h3>5. 비즈니스 세그먼트별 성과 Heatmap</h3>
+            <img src="images/v5_business_segment_heatmap.png" alt="Business Segment Heatmap">
+            <div class="insight">뷰티 및 시계 카테고리 셀러의 성장이 가장 두드러집니다.</div>
+        </div>
+
+        <div class="card">
+            <h3>6. 리드 프로필(Lead Type)별 가치</h3>
+            <img src="images/v6_lead_behavior_ltv.png" alt="Lead Behavior analysis">
+            <div class="insight">'online_big' 프로필을 가진 리드의 초기 전환 가치가 높습니다.</div>
+        </div>
+
+        <div class="full-width card">
+            <h3>7. 스타 셀러 그룹의 시계열 성장 곡선</h3>
+            <img src="images/v7_star_growth_curve.png" alt="Star Seller Growth Curve">
+            <div class="insight">입점 3개월 차 이후부터 매출 격차가 기하급수적으로 벌어집니다.</div>
+        </div>
+    </div>
+
+    <div class="full-width card" style="margin-top:20px;">
+        <h3>💡 파트 4 최종 결론 및 전략 제안</h3>
+        <p>1. <b>고가치 채널 집중</b>: 단순 유입량이 아닌 '우량 셀러 배출률'이 높은 Paid Search에 예산을 우선 배정해야 합니다.</p>
+        <p>2. <b>타겟 프로필 고도화</b>: 'online_big' 리드와 '뷰티/가전' 업종의 조합을 전략적 타겟으로 설정합니다.</p>
+        <p>3. <b>조기 온보딩 강화</b>: 성장 곡선 분석 결과, 초기 3개월 관리가 장기 LTV를 결정짓는 핵심 골든 타임입니다.</p>
+    </div>
+</body>
+</html>
