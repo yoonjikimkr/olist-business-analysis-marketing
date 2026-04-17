@@ -2,7 +2,6 @@
 
 ## [주요 변경 사항]
 
-- **문서 형태 자체가 바뀜**: 통합 HTML 문서에서 탭형 AARRR 리포트 UI로 바뀜. 상단에 Acquisition / Activation / Retention / Referral / Revenue 탭이 추가됨.
 - **파트별 도입문이 새로 추가됨**: 각 파트 시작에 “이 파트가 무엇을 보는지” 설명하는 1~2문장짜리 안내문이 들어감.
 - **파트 간 연결 문장이 추가됨**: Acquisition→Activation, Activation→Retention, Retention→Referral처럼 다음 단계로 넘어가는 문장이 들어감.
 - **Acquisition 용어가 일부 정교화됨**: 수익성, ROI 중심 표현 일부가 매출 기여도, 성과 효율, 유입 대비 매출 효율로 바뀜.
