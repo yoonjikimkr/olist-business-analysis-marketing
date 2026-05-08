@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Olist AARRR Dashboard — Power BI Visual Guide (v2)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 20px; line-height: 1.5; }
+h1 { text-align: center; color: #00d4aa; margin-bottom: 10px; font-size: 1.8em; }
+.subtitle { text-align: center; color: #a0a0a0; font-size: 0.85em; margin-bottom: 30px; }
+.arch-note { background: #2a1a3e; border: 1px solid #6a3d9a; border-radius: 8px; padding: 16px; margin-bottom: 30px; }
+.arch-note h2 { color: #bb86fc; font-size: 1.1em; margin-bottom: 10px; }
+.arch-note p { font-size: 0.85em; color: #ccc; margin-bottom: 6px; }
+.arch-note code { background: #1a1a2e; padding: 2px 6px; border-radius: 3px; color: #4fc3f7; font-size: 0.85em; }
+.page { background: #16213e; border-radius: 12px; margin-bottom: 40px; padding: 24px; border: 1px solid #0f3460; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #0f3460; }
+.page-title { font-size: 1.4em; color: #00d4aa; }
+.page-subtitle { color: #a0a0a0; font-size: 0.9em; }
+.page-table-badge { display: inline-block; background: #6a3d9a; color: white; font-size: 0.7em; padding: 3px 10px; border-radius: 4px; margin-top: 4px; }
+.grid { display: grid; gap: 16px; }
+.grid-2x2 { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+.visual-card { background: #0f3460; border-radius: 8px; padding: 16px; border: 1px solid #1a4080; }
+.visual-card h3 { color: #4fc3f7; font-size: 1em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.chart-type { display: inline-block; background: #e94560; color: white; font-size: 0.7em; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+.mockup { background: #0a1628; border-radius: 6px; padding: 16px; margin: 10px 0; min-height: 100px; display: flex; align-items: center; justify-content: center; border: 1px dashed #1a4080; }
+.mockup pre { font-size: 0.75em; color: #7fdbda; line-height: 1.4; }
+table.spec { width: 100%; font-size: 0.8em; border-collapse: collapse; margin-top: 8px; }
+table.spec td { padding: 5px 8px; border-bottom: 1px solid #1a4080; vertical-align: top; }
+table.spec td:first-child { color: #a0a0a0; width: 100px; white-space: nowrap; font-weight: bold; }
+table.spec td:last-child { color: #fff; }
+.field-well { display: inline-block; background: #1a4080; padding: 1px 6px; border-radius: 3px; font-size: 0.8em; color: #4fc3f7; margin: 1px 0; }
+.table-tag { display: inline-block; background: #2d5016; padding: 1px 6px; border-radius: 3px; font-size: 0.75em; color: #a4d65e; }
+.filter-bar { background: #0f3460; border-radius: 6px; padding: 10px 16px; margin-bottom: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.filter-bar span { font-size: 0.8em; color: #a0a0a0; }
+.filter-chip { background: #1a4080; border-radius: 4px; padding: 3px 10px; font-size: 0.75em; color: #4fc3f7; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi { background: #0f3460; border-radius: 8px; padding: 12px; text-align: center; }
+.kpi .value { font-size: 1.4em; color: #00d4aa; font-weight: bold; }
+.kpi .label { font-size: 0.7em; color: #a0a0a0; margin-top: 4px; }
+.kpi .measure { font-size: 0.6em; color: #666; margin-top: 2px; font-family: monospace; }
+.note { font-size: 0.75em; color: #ff9800; margin-top: 8px; font-style: italic; }
+.warning { font-size: 0.75em; color: #ff5252; margin-top: 8px; font-weight: bold; }
+.ready { font-size: 0.75em; color: #00e676; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Olist AARRR Dashboard — Power BI Visual Specification v2</h1>
+<p class="subtitle">BA Implementation Guide | Power BI Field Well + Measure + Table Reference</p>
+
+<!-- ==================== ARCHITECTURE NOTE ==================== -->
+<div class="arch-note">
+  <h2>Data Architecture (Critical)</h2>
+  <p><strong>Primary Table:</strong> <code>Olist_Marketing_Funnel</code> (= looker_studio_master.csv, 8,000 rows, 1 row = 1 MQL)</p>
+  <p><strong>Star Schema:</strong> <code>Orders</code>, <code>Order_Items</code>, <code>Order_Reviews</code>, <code>Sellers</code>, <code>Products</code>, <code>Category_Translation</code></p>
+  <p><strong>Relationship NOTE:</strong> <code>Olist_Marketing_Funnel</code>은 star schema와 직접 관계 없음. Page 1&4는 이 테이블 단독 사용. Page 2&3은 star schema 사용.</p>
+  <p><strong>Scatter Chart 주의:</strong> Scatter의 "Values" = 점의 grain(카테고리). X/Y Axis = measure. <code>MQL[origin]</code> 절대 사용 금지 (관계 없음) → <code>Olist_Marketing_Funnel[origin]</code> 사용</p>
+  <p><strong>COUNT 정책:</strong> Olist_Marketing_Funnel은 row = unique MQL이므로 <code>COUNTROWS</code> = <code>DISTINCTCOUNT(mql_id)</code>. Order_Items는 주문당 복수 행 → 주문 수 = <code>DISTINCTCOUNT(order_id)</code></p>
+</div>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Page 1: Marketing Funnel Deep-Dive (Acquisition & Activation)</div>
+      <div class="page-subtitle">유입 채널 효율성 진단 + 입점 병목 구간(15일 골든타임) 추적</div>
+      <span class="page-table-badge">Table: Olist_Marketing_Funnel (exclusively)</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span>Slicers:</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[origin]</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[first_contact_date] (Between)</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[contact_quarter]</span>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">8,000</div><div class="label">Total MQL</div><div class="measure">COUNTROWS(Olist_Marketing_Funnel)</div></div>
+    <div class="kpi"><div class="value">842</div><div class="label">Total Won</div><div class="measure">COUNTROWS(..., [is_won]=1)</div></div>
+    <div class="kpi"><div class="value">10.5%</div><div class="label">CVR %</div><div class="measure">Won / MQL</div></div>
+    <div class="kpi"><div class="value">50.5d</div><div class="label">Avg Sales Cycle</div><div class="measure">AVERAGEX(...[sales_cycle_days])</div></div>
+  </div>
+
+  <div class="grid grid-2x2">
+    <!-- Visual 1: Scatter -->
+    <div class="visual-card">
+      <h3><span class="chart-type">SCATTER</span> Lead Quality Matrix (CVR vs Sales Cycle)</h3>
+      <div class="mockup"><pre>
+  CVR(%)
+   ^  (unknown 16.3%)
+   |    * (paid_search 12.3%)
+   |      * (organic 11.8%)
+   |        * (direct 11.2%)
+   |                    * (social 5.6%)
+   +-----------------------------> Cycle(d)
+        13d   33d   53d   61d
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Scatter Chart</td></tr>
+        <tr><td>Values</td><td><span class="field-well">Olist_Marketing_Funnel[origin]</span> — 점의 grain (이게 빠지면 1점)</td></tr>
+        <tr><td>X Axis</td><td><span class="field-well">[Avg Sales Cycle Days]</span> measure</td></tr>
+        <tr><td>Y Axis</td><td><span class="field-well">[CVR by Origin %]</span> measure</td></tr>
+        <tr><td>Size</td><td><span class="field-well">[Total MQL]</span> measure (bubble = lead volume)</td></tr>
+        <tr><td>Legend</td><td>(optional — Values에 origin 이미 있으므로 색 자동 구분됨)</td></tr>
+      </table>
+      <div class="ready">Ready — 드래그만 하면 11개 origin별 점 표시됨</div>
+    </div>
+
+    <!-- Visual 2: Clustered Bar (% composition) -->
+    <div class="visual-card">
+      <h3><span class="chart-type">CLUSTERED BAR</span> Activation Golden Time (15d)</h3>
+      <div class="mockup"><pre>
+  7일이내    [############] 33.6%
+  60일초과   [########] 23.2%
+  8~14일    [######] 17.1%
+  15~30일   [#####] 15.1%
+  31~60일   [###] 10.9%
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Clustered Bar Chart (NOT 100% Stacked)</td></tr>
+        <tr><td>Y-axis</td><td><span class="field-well">Olist_Marketing_Funnel[conversion_speed]</span> — 바 카테고리</td></tr>
+        <tr><td>X-axis</td><td><span class="field-well">[Won % by Speed]</span> — 구성비 (전체 Won 대비 %)<br>
+          또는 <span class="field-well">[Total Won]</span> — 절대 건수</td></tr>
+        <tr><td>Legend</td><td>(생략)</td></tr>
+        <tr><td>Sort</td><td>[Won % by Speed] DESC</td></tr>
+      </table>
+      <div class="note">100% Stacked Bar 쓰면 안 됨 — Legend 없이 단일 measure면 모든 바 100% 표시됨. Clustered Bar가 정답.</div>
+      <div class="note">DAX: Won % by Speed = DIVIDE([Total Won], CALCULATE([Total Won], ALL([conversion_speed])))</div>
+      <div class="ready">Ready — measure [Won % by Speed] 생성 완료</div>
+    </div>
+
+    <!-- Visual 3: Table -->
+    <div class="visual-card">
+      <h3><span class="chart-type">TABLE</span> Landing Page Performance (Top 5)</h3>
+      <div class="mockup"><pre>
+  # | PAGE ID      | TRAFFIC | CVR   | WON
+  1 | /sellers-lp1 | 2,450   | 15.2% | 372
+  2 | /join-olist  | 1,200   | 10.1% | 121
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Table visual</td></tr>
+        <tr><td>Columns</td><td>
+          <span class="field-well">Olist_Marketing_Funnel[landing_page_id]</span><br>
+          <span class="field-well">[Total MQL]</span> (COUNTROWS)<br>
+          <span class="field-well">[Total Won]</span> (COUNTROWS, is_won=1)<br>
+          <span class="field-well">[CVR %]</span> (Won/MQL)
+        </td></tr>
+        <tr><td>Sort</td><td>[Total MQL] DESC</td></tr>
+        <tr><td>Filter</td><td>Top N = 5 by [Total MQL]</td></tr>
+      </table>
+      <div class="ready">Ready</div>
+    </div>
+
+    <!-- Visual 4: Funnel -->
+    <div class="visual-card">
+      <h3><span class="chart-type">FUNNEL</span> Sales Team Funnel (MQL > PQL > WON)</h3>
+      <div class="mockup"><pre>
+  MQL (8,000)     COUNTROWS(all)
+    |  SDR Filter (74% loss)
+  PQL (2,100)     COUNTROWS(sdr_id not blank)
+    |  SR Closing (40.1%)
+  WON (842)       COUNTROWS(is_won=1)
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Funnel Chart</td></tr>
+        <tr><td>Category</td><td>별도 stage 테이블 필요 OR Multi-row Card 3장으로 대체</td></tr>
+        <tr><td>Values</td><td>각 stage measure: [Total MQL], [PQL Count], [Total Won]</td></tr>
+        <tr><td>DAX</td><td>PQL Count = CALCULATE(COUNTROWS(...), NOT ISBLANK([sdr_id]))</td></tr>
+      </table>
+      <div class="note">Funnel chart는 Category에 텍스트 컬럼 + Values에 measure 1개가 기본. 3-stage funnel은 Clustered Bar (MQL/PQL/Won을 행으로) 또는 Card 3장이 더 실용적.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Page 2: Seller DNA & Segmentation (Revenue & Retention)</div>
+      <div class="page-subtitle">K-Means 클러스터링 기반 고가치 셀러 식별 + 성장 전략</div>
+      <span class="page-table-badge">Table: Olist_Marketing_Funnel (Scatter/Top10) + Star Schema (Category LTV)</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span>Slicers:</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[seller_grade]</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[revenue_tier]</span>
+    <span class="filter-chip">Category_Translation[product_category_name_english]</span>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">R$ 676K</div><div class="label">Total GMV</div><div class="measure">SUM([total_revenue])</div></div>
+    <div class="kpi"><div class="value">843</div><div class="label">Won Sellers</div><div class="measure">DISTINCTCOUNT([seller_id])</div></div>
+    <div class="kpi"><div class="value">R$ 802</div><div class="label">Avg Revenue/Seller</div><div class="measure">GMV / Sellers</div></div>
+    <div class="kpi"><div class="value">45.1%</div><div class="label">Revenue Activation</div><div class="measure">has_revenue / is_won</div></div>
+  </div>
+
+  <div class="grid grid-2x2">
+    <!-- Visual 1: K-Means Scatter -->
+    <div class="visual-card">
+      <h3><span class="chart-type">SCATTER</span> K-Means 4-Cluster (Order Freq vs GMV)</h3>
+      <div class="mockup"><pre>
+  Order Count
+   ^
+   |  [A_고성과] * (565건, R$114K)
+   |       * (261건, R$37K)
+   |  [B_일반] *  * *
+   |  [C_저성과] * *
+   +----------------------------> GMV (R$)
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Scatter Chart</td></tr>
+        <tr><td>Values</td><td><span class="field-well">Olist_Marketing_Funnel[seller_id]</span> — 점의 grain (셀러 1명 = 1점)</td></tr>
+        <tr><td>X Axis</td><td><span class="field-well">SUM(Olist_Marketing_Funnel[total_revenue])</span> — 셀러별 GMV</td></tr>
+        <tr><td>Y Axis</td><td><span class="field-well">SUM(Olist_Marketing_Funnel[total_order_count])</span> — 주문 건수</td></tr>
+        <tr><td>Legend</td><td><span class="field-well">Olist_Marketing_Funnel[seller_grade]</span> — 클러스터 색 구분</td></tr>
+        <tr><td>Filter</td><td>Olist_Marketing_Funnel[is_won] = 1 (won 셀러만)</td></tr>
+      </table>
+      <div class="note">Measure 대신 SUM 집계를 직접 드래그 시 "합계(total_revenue)" 형태로 들어감. 또는 별도 measure 생성.</div>
+      <div class="ready">Ready — 843개 셀러 점 (4가지 색)</div>
+    </div>
+
+    <!-- Visual 2: Category LTV Bar -->
+    <div class="visual-card">
+      <h3><span class="chart-type">CLUSTERED BAR</span> Category LTV (Top 10)</h3>
+      <div class="mockup"><pre>
+  Watches       [########] R$ 25K
+  Bed/Bath      [#######] R$ 22K
+  Health/Beauty [######] R$ 18K
+  Sports        [#####] R$ 15K
+  Computers     [####] R$ 12K
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Clustered Bar Chart (Horizontal)</td></tr>
+        <tr><td>Y-axis</td><td><span class="field-well">Category_Translation[product_category_name_english]</span> <span class="table-tag">Star Schema</span></td></tr>
+        <tr><td>X-axis</td><td><span class="field-well">[Total Sales (Order_Items)]</span> = SUM(Order_Items[price])</td></tr>
+        <tr><td>Legend</td><td>(생략)</td></tr>
+        <tr><td>Filter</td><td>Top N = 10 by X-axis value</td></tr>
+      </table>
+      <div class="ready">Ready — Star schema 관계 (Order_Items → Products → Category_Translation) 설정 완료</div>
+    </div>
+
+    <!-- Visual 3: Retention Matrix -->
+    <div class="visual-card">
+      <h3><span class="chart-type">MATRIX</span> Seller Retention Cohort</h3>
+      <div class="mockup"><pre>
+  Cohort  | M0   | M1   | M2   | M3   | M6
+  2017.10 | 100% | 45%  | 32%  | 22%  | 12%
+  2017.11 | 100% | 48%  | 35%  | 25%  | -
+  2018.01 | 100% | 52%  | 38%  | -    | -
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Matrix (conditional formatting = heatmap colors)</td></tr>
+        <tr><td>Rows</td><td><span class="field-well">Seller_Cohort[cohort_month]</span></td></tr>
+        <tr><td>Columns</td><td><span class="field-well">Seller_Cohort[month_offset]</span></td></tr>
+        <tr><td>Values</td><td><span class="field-well">[Cohort Retention %]</span> measure</td></tr>
+      </table>
+      <div class="warning">NOT READY — Seller_Cohort calculated table에 오류 있음. seller_id 컬럼 누락. 수정 필요.</div>
+    </div>
+
+    <!-- Visual 4: Top 10 Table -->
+    <div class="visual-card">
+      <h3><span class="chart-type">TABLE</span> Top 10 GMV Drivers (Star List)</h3>
+      <div class="mockup"><pre>
+  SELLER (short) | LEAD TYPE  | GMV       | GRADE
+  7d13...        | online_big | R$113,629 | A_고성과
+  ba90...        | offline    | R$ 44,213 | A_고성과
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Table visual</td></tr>
+        <tr><td>Columns</td><td>
+          <span class="field-well">Olist_Marketing_Funnel[seller_id]</span><br>
+          <span class="field-well">Olist_Marketing_Funnel[lead_type]</span><br>
+          <span class="field-well">SUM(Olist_Marketing_Funnel[total_revenue])</span><br>
+          <span class="field-well">Olist_Marketing_Funnel[seller_grade]</span>
+        </td></tr>
+        <tr><td>Filter</td><td>is_won = 1, Top N = 10 by total_revenue</td></tr>
+        <tr><td>Sort</td><td>total_revenue DESC</td></tr>
+      </table>
+      <div class="ready">Ready</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 3 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Page 3: Service Quality & Reputation (Referral)</div>
+      <div class="page-subtitle">배송 성과 + 리뷰 품질 → NPS 근본 원인 분석</div>
+      <span class="page-table-badge">Table: Star Schema (Orders, Order_Reviews, Order_Items, Sellers)</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span>Slicers:</span>
+    <span class="filter-chip">Sellers[seller_state]</span>
+    <span class="filter-chip">Orders[order_status]</span>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">4.1</div><div class="label">Avg Review Score</div><div class="measure">AVERAGE(Order_Reviews[review_score])</div></div>
+    <div class="kpi"><div class="value">12.5d</div><div class="label">Avg Delivery Days</div><div class="measure">AVERAGE(Orders[delivery_days])</div></div>
+    <div class="kpi"><div class="value">93.2%</div><div class="label">On-Time Delivery</div><div class="measure">on_time_flag=1 / delivered</div></div>
+    <div class="kpi"><div class="value">99.2K</div><div class="label">Total Reviews</div><div class="measure">COUNTROWS(Order_Reviews)</div></div>
+  </div>
+
+  <div class="grid grid-2x2">
+    <!-- Visual 1: Delivery vs Review -->
+    <div class="visual-card">
+      <h3><span class="chart-type">SCATTER or LINE</span> Delivery Speed vs Review Score</h3>
+      <div class="mockup"><pre>
+  Score (1-5)
+   ^
+   | * * 4.8 (Fast &lt;7d)
+   |     * 3.5 (Mid 10-15d)
+   |          * 1.8 (Delayed &gt;20d)
+   +----------------------------> Delivery Days
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Line Chart (delivery days bin vs avg score) 권장. Scatter도 가능.</td></tr>
+        <tr><td>X Axis</td><td><span class="field-well">Orders[delivery_days]</span> (calculated column, 이미 존재)<br>
+        또는 Bin 생성: 0-5, 5-10, 10-15, 15-20, 20+ 그룹</td></tr>
+        <tr><td>Y Axis</td><td><span class="field-well">[Avg Review Score]</span> = AVERAGE(Order_Reviews[review_score])</td></tr>
+        <tr><td>Join Path</td><td>Orders ← Order_Reviews (order_id)</td></tr>
+      </table>
+      <div class="note">Line Chart 추천: X=delivery_days(연속형), Y=[Avg Review Score]. Bin 없이도 트렌드 보임.</div>
+      <div class="ready">Ready — delivery_days calc column + Order_Reviews 관계 존재</div>
+    </div>
+
+    <!-- Visual 2: Word Cloud -->
+    <div class="visual-card">
+      <h3><span class="chart-type">WORD CLOUD</span> Sentiment Word Cloud (NLP)</h3>
+      <div class="mockup"><pre>
+  [POSITIVE] ** QUALIDADE ** RAPIDO PERFEITO
+  [NEGATIVE] ** ATRASO ** REEMBOLSO DEFEITO
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Word Cloud (AppSource custom visual) 또는 별도 Python 전처리</td></tr>
+        <tr><td>Category</td><td>Tokenized review words (전처리 테이블 필요)</td></tr>
+        <tr><td>Values</td><td>Word frequency count</td></tr>
+        <tr><td>Source</td><td>Order_Reviews[review_comment_message]</td></tr>
+      </table>
+      <div class="warning">NOT READY — Python tokenization 전처리 필요. 별도 calculated table 또는 외부 처리 후 import.</div>
+    </div>
+
+    <!-- Visual 3: Geographic -->
+    <div class="visual-card">
+      <h3><span class="chart-type">TABLE</span> Geographic Freight & Quality</h3>
+      <div class="mockup"><pre>
+  State | Avg Freight | Delivery | Review
+  SP    | R$ 12.1     | 8d       | 4.6
+  RJ    | R$ 24.5     | 12d      | 4.2
+  BA    | R$ 45.0     | 18d      | 3.1
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Table (conditional formatting) 또는 Filled Map</td></tr>
+        <tr><td>Columns</td><td>
+          <span class="field-well">Sellers[seller_state]</span><br>
+          <span class="field-well">[Avg Freight]</span> = AVERAGE(Order_Items[freight_value])<br>
+          <span class="field-well">[Avg Delivery Days]</span><br>
+          <span class="field-well">[Avg Review Score]</span>
+        </td></tr>
+        <tr><td>Join Path</td><td>Sellers ← Order_Items (seller_id) → Orders ← Order_Reviews (order_id)</td></tr>
+      </table>
+      <div class="ready">Ready — 모든 관계 설정 완료</div>
+    </div>
+
+    <!-- Visual 4: Star vs General -->
+    <div class="visual-card">
+      <h3><span class="chart-type">CLUSTERED BAR</span> Star vs General Seller Quality</h3>
+      <div class="mockup"><pre>
+  A_고성과   [####################] 4.7
+  B_일반    [###############] 4.2
+  C_저성과   [###########] 3.8
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Clustered Bar Chart (Horizontal)</td></tr>
+        <tr><td>Y-axis</td><td><span class="field-well">Olist_Marketing_Funnel[seller_grade]</span></td></tr>
+        <tr><td>X-axis</td><td><span class="field-well">[Avg Review Score]</span> = AVERAGE(Order_Reviews[review_score])</td></tr>
+        <tr><td>Legend</td><td>(생략)</td></tr>
+      </table>
+      <div class="warning">REQUIRES RELATIONSHIP — Olist_Marketing_Funnel[seller_id] → Sellers[seller_id] 관계 필요. 현재 미설정.</div>
+      <div class="note">대안: KMeans_Segments[seller_grade] 사용 (KMeans → MQL → Closed_Deals → Sellers → Order_Items → Orders → Reviews 경로). 단, 양방향 필터 필요.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 4 ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Page 4: Strategy Simulation & ROI (Decision Board)</div>
+      <div class="page-subtitle">분석 결과 적용 시 비즈니스 임팩트 시뮬레이션</div>
+      <span class="page-table-badge">Table: Olist_Marketing_Funnel + What-if Parameters</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span>Slicers:</span>
+    <span class="filter-chip">Budget_Search_Pct[Budget_Search_Pct Value] (What-if slider)</span>
+    <span class="filter-chip">Olist_Marketing_Funnel[origin]</span>
+  </div>
+
+  <div class="grid grid-2x2">
+    <!-- Visual 1: Budget Comparison -->
+    <div class="visual-card">
+      <h3><span class="chart-type">CLUSTERED BAR</span> Budget Reallocation (AS-IS vs TO-BE)</h3>
+      <div class="mockup"><pre>
+  AS-IS:
+    Social  [########] 40%    TO-BE (slider):
+    Search  [######] 30%        Search  [##############] 70%
+    Other   [######] 30%        Social  [##] 10%
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Clustered Bar Chart (Horizontal)</td></tr>
+        <tr><td>Y-axis</td><td>Channel name (origin_clean: search/social/other)</td></tr>
+        <tr><td>X-axis</td><td>Budget % (What-if parameter value)</td></tr>
+        <tr><td>Legend</td><td>"AS-IS" vs "TO-BE" (scenario column)</td></tr>
+        <tr><td>DAX</td><td>What-if parameter tables: Budget_Search_Pct, Budget_Social_Pct</td></tr>
+      </table>
+      <div class="note">구현 팁: 별도 "Budget_Scenario" 테이블 (3 rows: search/social/other x 2 scenarios) 생성 후 bar chart에 사용. 또는 KPI Card 2장으로 AS-IS/TO-BE 비교.</div>
+    </div>
+
+    <!-- Visual 2: KPI Cards -->
+    <div class="visual-card">
+      <h3><span class="chart-type">CARD</span> Expected Revenue Lift</h3>
+      <div class="mockup"><pre>
+  [Current GMV]    [Predicted GMV]   [Lift %]     [CAC Reduction]
+   R$ 676,851       R$ 754,689        +11.5%        -12.4%
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Card (New) x 4 또는 Multi-row Card</td></tr>
+        <tr><td>Fields</td><td>
+          <span class="field-well">[Total GMV]</span><br>
+          <span class="field-well">[Simulated GMV]</span><br>
+          <span class="field-well">[Simulated Lift %]</span><br>
+          별도 CAC measure 필요
+        </td></tr>
+      </table>
+      <div class="ready">Ready — Simulated GMV measure 존재 (What-if 연동)</div>
+    </div>
+
+    <!-- Visual 3: Waterfall -->
+    <div class="visual-card">
+      <h3><span class="chart-type">WATERFALL</span> Channel ROI Decomposition</h3>
+      <div class="mockup"><pre>
+  paid_search   [+R$155K]
+  organic       [+R$207K]
+  unknown       [+R$203K]
+  direct        [+R$22K]
+  social        [+R$43K]
+  other         [+R$46K]
+  ─────────────────────
+  Total GMV     [R$677K]
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Waterfall Chart</td></tr>
+        <tr><td>Category</td><td><span class="field-well">Olist_Marketing_Funnel[origin_clean]</span></td></tr>
+        <tr><td>Y-axis</td><td>(Breakdown — 사용 안 함)</td></tr>
+        <tr><td>Values</td><td><span class="field-well">[Total GMV]</span> = SUM(total_revenue)</td></tr>
+      </table>
+      <div class="ready">Ready — origin_clean + total_revenue 존재</div>
+    </div>
+
+    <!-- Visual 4: Action Items -->
+    <div class="visual-card">
+      <h3><span class="chart-type">TEXT BOX</span> Key Action Items (BA Recommendation)</h3>
+      <div class="mockup"><pre>
+  1. PAID SEARCH 70% 집중 배정 (Acquisition)
+  2. WATCHES/SMALL APPL 타겟팅 강화 (Revenue)
+  3. 15일 이내 계약 패스트트랙 운영 (Activation)
+  4. 배송 지연 셀러 실시간 페널티 (Referral)
+      </pre></div>
+      <table class="spec">
+        <tr><td>Chart Type</td><td>Text Box (Insert > Text box) — 데이터 연결 불필요</td></tr>
+        <tr><td>Content</td><td>수동 인사이트 텍스트 입력</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FIELD WELL REFERENCE ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Power BI Field Well Reference (Chart Type별)</div>
+      <div class="page-subtitle">각 차트 유형의 정확한 필드 well 명칭</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2x2">
+    <div class="visual-card">
+      <h3>Scatter Chart</h3>
+      <table class="spec">
+        <tr><td>Values</td><td>점의 grain (카테고리 필드). 빠지면 1점으로 집계됨!</td></tr>
+        <tr><td>X Axis</td><td>Measure (숫자)</td></tr>
+        <tr><td>Y Axis</td><td>Measure (숫자)</td></tr>
+        <tr><td>Legend</td><td>색 구분 (카테고리)</td></tr>
+        <tr><td>Size</td><td>Bubble 크기 (measure)</td></tr>
+      </table>
+    </div>
+
+    <div class="visual-card">
+      <h3>Clustered Bar / 100% Stacked Bar</h3>
+      <table class="spec">
+        <tr><td>Y-axis</td><td>카테고리 (바 레이블)</td></tr>
+        <tr><td>X-axis</td><td>Measure (바 길이/값)</td></tr>
+        <tr><td>Legend</td><td>색 분리 (series)</td></tr>
+        <tr><td>Small mult.</td><td>소규모 반복 차트</td></tr>
+      </table>
+      <div class="note">"Values" 필드 없음! X-axis가 값 역할.</div>
+    </div>
+
+    <div class="visual-card">
+      <h3>Matrix</h3>
+      <table class="spec">
+        <tr><td>Rows</td><td>행 카테고리</td></tr>
+        <tr><td>Columns</td><td>열 카테고리</td></tr>
+        <tr><td>Values</td><td>셀 값 (measure)</td></tr>
+      </table>
+    </div>
+
+    <div class="visual-card">
+      <h3>Funnel / Waterfall / Card</h3>
+      <table class="spec">
+        <tr><td colspan="2"><strong>Funnel:</strong> Category + Values</td></tr>
+        <tr><td colspan="2"><strong>Waterfall:</strong> Category + Values (+ Y-axis Breakdown optional)</td></tr>
+        <tr><td colspan="2"><strong>Card:</strong> Fields (measure 하나)</td></tr>
+        <tr><td colspan="2"><strong>Table:</strong> Columns (모든 필드 나열)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== STATUS SUMMARY ==================== -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Implementation Status</div>
+      <div class="page-subtitle">바로 구현 가능 vs 추가 작업 필요</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2x2">
+    <div class="visual-card">
+      <h3 style="color: #00e676;">Ready (Drag & Drop)</h3>
+      <table class="spec">
+        <tr><td>P1-V1</td><td>Scatter: Lead Quality Matrix</td></tr>
+        <tr><td>P1-V2</td><td>100% Stacked Bar: Golden Time</td></tr>
+        <tr><td>P1-V3</td><td>Table: Landing Page Top 5</td></tr>
+        <tr><td>P2-V1</td><td>Scatter: K-Means Cluster</td></tr>
+        <tr><td>P2-V2</td><td>Clustered Bar: Category LTV</td></tr>
+        <tr><td>P2-V4</td><td>Table: Top 10 GMV</td></tr>
+        <tr><td>P3-V1</td><td>Line: Delivery vs Review</td></tr>
+        <tr><td>P3-V3</td><td>Table: Geographic Quality</td></tr>
+        <tr><td>P4-V2</td><td>Cards: Revenue Lift</td></tr>
+        <tr><td>P4-V3</td><td>Waterfall: Channel ROI</td></tr>
+        <tr><td>P4-V4</td><td>Text Box: Action Items</td></tr>
+      </table>
+    </div>
+
+    <div class="visual-card">
+      <h3 style="color: #ff5252;">Needs Fix</h3>
+      <table class="spec">
+        <tr><td>P1-V4</td><td>Funnel: Stage 테이블 또는 대체 시각화 결정 필요</td></tr>
+        <tr><td>P2-V3</td><td>Matrix Cohort: Seller_Cohort 테이블 오류 수정</td></tr>
+        <tr><td>P3-V2</td><td>Word Cloud: Python NLP 전처리 필요</td></tr>
+        <tr><td>P3-V4</td><td>Star vs General: Olist_Marketing_Funnel → Sellers 관계 추가 필요</td></tr>
+        <tr><td>P4-V1</td><td>Budget Bar: Scenario 비교 테이블 구조 결정 필요</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
